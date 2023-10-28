@@ -1,0 +1,39 @@
+{
+  "name": "action-webhooks",
+  "version": "1.0.0",
+  "description": "A GitHub action sending Discord build webhooks",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "jest": "jest --coverage",
+    "lint": "tsc --noEmit",
+    "package": "ncc build src/index.ts",
+    "release": "yarn package && git add -f dist/",
+    "test": "yarn lint && yarn jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Matyrobbrt/action-webhooks.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Matyrobbrt/action-webhooks/issues"
+  },
+  "homepage": "https://github.com/Matyrobbrt/action-webhooks#readme",
+  "dependencies": {
+    "@actions/core": "^1.10.1",
+    "@actions/github": "^6.0.0",
+    "axios": "^1.6.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^28.1.7",
+    "@types/node": "^18.8.3",
+    "@vercel/ncc": "^0.34.0",
+    "jest": "^28.1.3",
+    "jest-circus": "^28.1.3",
+    "ts-jest": "^28.0.8",
+    "typescript": "^4.8.4"
+  }
+}

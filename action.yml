@@ -1,0 +1,16 @@
+name: 'Discord webhooks'
+description: 'An action sending Discord build notifications'
+inputs:
+  version:
+    description: 'The build version'
+    required: false
+    default: '?'
+  webhook_url:
+    description: 'The Discord webhook URL'
+    required: true
+  status:
+    description: 'The status of the build'
+    required: true
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
