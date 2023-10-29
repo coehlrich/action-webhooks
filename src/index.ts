@@ -86,11 +86,11 @@ function getStatus(status: string): Status {
         case "success": return Status.success
         case "failure": return Status.failed
         case "failed": return Status.failed
-        
+
         case "cancelled": return Status.cancelled
         case "skipped": return Status.cancelled
 
-        case "timedout": return Status.timedout
+        case "timed_out": return Status.timedout
         default: return Status.started
     }
 }
