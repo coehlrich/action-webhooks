@@ -17,7 +17,7 @@ colors[Status.timedout] = 0xF48381
 
 const userFriendlyName = new Map<Status, string>()
 userFriendlyName[Status.started] = "Started"
-userFriendlyName[Status.success] = "Success"
+userFriendlyName[Status.success] = "Successful"
 userFriendlyName[Status.failed] = "Failed"
 userFriendlyName[Status.timedout] = "Timed Out"
 userFriendlyName[Status.cancelled] = "Cancelled"
