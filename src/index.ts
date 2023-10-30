@@ -24,7 +24,7 @@ userFriendlyName[Status.cancelled] = "Cancelled"
 
 export async function run(): Promise<any> {
     try {
-        const octo: InstanceType<typeof GitHub> = getOctokit(process.env['GITHUB_TOKEN']!!);
+        const octo: InstanceType<typeof GitHub> = getOctokit(getInput("github_token"));
         const lastCommit = await octo.rest.repos.getCommit({
             ...context.repo,
             ref: context.sha
@@ -35,7 +35,7 @@ export async function run(): Promise<any> {
         const fields: any[] = []
         if (getInput("version") && getInput("version") != "?") {
             fields.push({
-                "name": "Build Number",
+                "name": "Version",
                 "value": getInput("version"),
                 "inline": true
             });

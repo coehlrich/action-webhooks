@@ -33376,7 +33376,7 @@ userFriendlyName[Status.timedout] = "Timed Out";
 userFriendlyName[Status.cancelled] = "Cancelled";
 async function run() {
     try {
-        const octo = (0, github_1.getOctokit)(process.env['GITHUB_TOKEN']);
+        const octo = (0, github_1.getOctokit)((0, core_1.getInput)("github_token"));
         const lastCommit = await octo.rest.repos.getCommit({
             ...github_1.context.repo,
             ref: github_1.context.sha
@@ -33385,7 +33385,7 @@ async function run() {
         const fields = [];
         if ((0, core_1.getInput)("version") && (0, core_1.getInput)("version") != "?") {
             fields.push({
-                "name": "Build Number",
+                "name": "Version",
                 "value": (0, core_1.getInput)("version"),
                 "inline": true
             });
