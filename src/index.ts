@@ -32,6 +32,31 @@ export async function run(): Promise<any> {
 
         const status = getStatus(getInput("status"))
 
+        const fields: any[] = []
+        if (getInput("version") && getInput("version") != "?") {
+            fields.push({
+                "name": "Build Number",
+                "value": getInput("version"),
+                "inline": true
+            });
+        }
+
+        fields.push({
+            "name": "Build Branch",
+            "value": context.payload.ref!!.toString().replace("refs/heads/", ""),
+            "inline": true
+        })
+        if (getInput('include_commit_message') == '' || getInput('include_commit_message') == 'true') {
+            fields.push({
+                "name": "Commit message",
+                "value": `\`${lastCommit.data.commit.message}\``
+            })
+        }
+
+        if (getInput('fields')) {
+            fields.push(JSON.parse(getInput('fields')))
+        }
+
         const json = {
             username: 'GitHub Actions',
             avatar_url: 'https://avatars.githubusercontent.com/in/15368?v=4',
@@ -40,22 +65,7 @@ export async function run(): Promise<any> {
                 "title": "Build " + userFriendlyName[status],
                 "url": `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
                 "color": colors[status],
-                "fields": [
-                    {
-                        "name": "Build Number",
-                        "value": getInput("version"),
-                        "inline": true
-                    },
-                    {
-                        "name": "Build Branch",
-                        "value": context.payload.ref!!.toString().replace("refs/heads/", ""),
-                        "inline": true
-                    },
-                    {
-                        "name": "Commit message",
-                        "value": `\`${lastCommit.data.commit.message}\``
-                    }
-                ],
+                "fields": fields,
                 "author": {
                     "name": context.repo.repo,
                     "url": `https://github.com/${context.repo.owner}/${context.repo.repo}`,

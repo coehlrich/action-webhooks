@@ -11,6 +11,13 @@ inputs:
   status:
     description: 'The status of the build'
     required: true
+  fields:
+    description: 'Additional fields in the embed'
+    required: false
+  include_commit_message:
+    required: false
+    description: 'If to include the commit message in the embed'
+    default: 'true'
 runs:
   using: 'node20'
   main: 'dist/index.js'

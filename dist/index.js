@@ -33382,6 +33382,28 @@ async function run() {
             ref: github_1.context.sha
         });
         const status = getStatus((0, core_1.getInput)("status"));
+        const fields = [];
+        if ((0, core_1.getInput)("version") && (0, core_1.getInput)("version") != "?") {
+            fields.push({
+                "name": "Build Number",
+                "value": (0, core_1.getInput)("version"),
+                "inline": true
+            });
+        }
+        fields.push({
+            "name": "Build Branch",
+            "value": github_1.context.payload.ref.toString().replace("refs/heads/", ""),
+            "inline": true
+        });
+        if ((0, core_1.getInput)('include_commit_message') == '' || (0, core_1.getInput)('include_commit_message') == 'true') {
+            fields.push({
+                "name": "Commit message",
+                "value": `\`${lastCommit.data.commit.message}\``
+            });
+        }
+        if ((0, core_1.getInput)('fields')) {
+            fields.push(JSON.parse((0, core_1.getInput)('fields')));
+        }
         const json = {
             username: 'GitHub Actions',
             avatar_url: 'https://avatars.githubusercontent.com/in/15368?v=4',
@@ -33390,22 +33412,7 @@ async function run() {
                     "title": "Build " + userFriendlyName[status],
                     "url": `https://github.com/${github_1.context.repo.owner}/${github_1.context.repo.repo}/actions/runs/${github_1.context.runId}`,
                     "color": colors[status],
-                    "fields": [
-                        {
-                            "name": "Build Number",
-                            "value": (0, core_1.getInput)("version"),
-                            "inline": true
-                        },
-                        {
-                            "name": "Build Branch",
-                            "value": github_1.context.payload.ref.toString().replace("refs/heads/", ""),
-                            "inline": true
-                        },
-                        {
-                            "name": "Commit message",
-                            "value": `\`${lastCommit.data.commit.message}\``
-                        }
-                    ],
+                    "fields": fields,
                     "author": {
                         "name": github_1.context.repo.repo,
                         "url": `https://github.com/${github_1.context.repo.owner}/${github_1.context.repo.repo}`,
