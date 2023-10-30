@@ -18,6 +18,10 @@ inputs:
     required: false
     description: 'If to include the commit message in the embed'
     default: 'true'
+  github_token:
+    description: 'The GitHub Token'
+    required: false
+    default: ${{ github.token }}
 runs:
   using: 'node20'
   main: 'dist/index.js'
