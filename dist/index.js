@@ -33351,7 +33351,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.run = void 0;
-const core_1 = __importStar(__nccwpck_require__(2186));
+const core = __importStar(__nccwpck_require__(2186));
 const github_1 = __nccwpck_require__(5438);
 const axios_1 = __importDefault(__nccwpck_require__(8757));
 var Status;
@@ -33376,17 +33376,17 @@ userFriendlyName[Status.timedout] = "Timed Out";
 userFriendlyName[Status.cancelled] = "Cancelled";
 async function run() {
     try {
-        const octo = (0, github_1.getOctokit)((0, core_1.getInput)("github_token"));
+        const octo = (0, github_1.getOctokit)(core.getInput("github_token"));
         const lastCommit = await octo.rest.repos.getCommit({
             ...github_1.context.repo,
             ref: github_1.context.sha
         });
-        const status = getStatus((0, core_1.getInput)("status"));
+        const status = getStatus(core.getInput("status"));
         const fields = [];
-        if ((0, core_1.getInput)("version") && (0, core_1.getInput)("version") != "?") {
+        if (core.getInput("version") && core.getInput("version") != "?") {
             fields.push({
                 "name": "Version",
-                "value": (0, core_1.getInput)("version"),
+                "value": core.getInput("version"),
                 "inline": true
             });
         }
@@ -33395,14 +33395,14 @@ async function run() {
             "value": github_1.context.payload.ref.toString().replace("refs/heads/", ""),
             "inline": true
         });
-        if ((0, core_1.getInput)('include_commit_message') == '' || (0, core_1.getInput)('include_commit_message') == 'true') {
+        if (core.getInput('include_commit_message') == '' || core.getInput('include_commit_message') == 'true') {
             fields.push({
                 "name": "Commit message",
                 "value": `\`${lastCommit.data.commit.message}\``
             });
         }
-        if ((0, core_1.getInput)('fields')) {
-            fields.push(JSON.parse((0, core_1.getInput)('fields')));
+        if (core.getInput('fields')) {
+            fields.push(JSON.parse(core.getInput('fields')));
         }
         const json = {
             username: 'GitHub Actions',
@@ -33425,7 +33425,7 @@ async function run() {
                 }
             ]
         };
-        await axios_1.default.post((0, core_1.getInput)("webhook_url"), json, {
+        await axios_1.default.post(core.getInput("webhook_url"), json, {
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -33434,7 +33434,7 @@ async function run() {
     }
     catch (error) {
         // @ts-ignore
-        core_1.default.setFailed(error.message);
+        core.setFailed(error.message);
     }
 }
 exports.run = run;

@@ -1,6 +1,6 @@
 import {GitHub} from "@actions/github/lib/utils";
 
-import core, {getInput} from '@actions/core';
+import * as core from '@actions/core';
 import {context, getOctokit} from '@actions/github';
 import axios from "axios";
 
@@ -24,19 +24,19 @@ userFriendlyName[Status.cancelled] = "Cancelled"
 
 export async function run(): Promise<any> {
     try {
-        const octo: InstanceType<typeof GitHub> = getOctokit(getInput("github_token"));
+        const octo: InstanceType<typeof GitHub> = getOctokit(core.getInput("github_token"));
         const lastCommit = await octo.rest.repos.getCommit({
             ...context.repo,
             ref: context.sha
         })
 
-        const status = getStatus(getInput("status"))
+        const status = getStatus(core.getInput("status"))
 
         const fields: any[] = []
-        if (getInput("version") && getInput("version") != "?") {
+        if (core.getInput("version") && core.getInput("version") != "?") {
             fields.push({
                 "name": "Version",
-                "value": getInput("version"),
+                "value": core.getInput("version"),
                 "inline": true
             });
         }
@@ -46,15 +46,15 @@ export async function run(): Promise<any> {
             "value": context.payload.ref!!.toString().replace("refs/heads/", ""),
             "inline": true
         })
-        if (getInput('include_commit_message') == '' || getInput('include_commit_message') == 'true') {
+        if (core.getInput('include_commit_message') == '' || core.getInput('include_commit_message') == 'true') {
             fields.push({
                 "name": "Commit message",
                 "value": `\`${lastCommit.data.commit.message}\``
             })
         }
 
-        if (getInput('fields')) {
-            fields.push(JSON.parse(getInput('fields')))
+        if (core.getInput('fields')) {
+            fields.push(JSON.parse(core.getInput('fields')))
         }
 
         const json = {
@@ -78,7 +78,7 @@ export async function run(): Promise<any> {
             }
         ]}
 
-        await axios.post(getInput("webhook_url"), json, {
+        await axios.post(core.getInput("webhook_url"), json, {
             headers: {
                 'Content-Type': 'application/json'
             }
